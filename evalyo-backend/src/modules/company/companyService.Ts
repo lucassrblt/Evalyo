@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import prisma from "../../utils/prismaClient";
-import { upload } from "../../middlewares/multer";
 import { uploadFile } from "../storage/storageService";
 
 const createCompany = async (req: Request, res: Response) => {
