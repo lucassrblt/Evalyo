@@ -1,0 +1,160 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id        String     @id @default(cuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  name      String
+  email     String    @unique
+  phone     String?
+  logo      String?
+  
+  @@map("company")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  email     String     @unique
+  password  String
+  active    Boolean    @default(false)
+  token     Int       @default(0)
+  profile   Profile? 
+
+  tasks     Task[]
+  quizzes   Quizz[]
+  @@map("user")
+}
+
+model Profile {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String  @unique
+  firstName String
+  lastName  String
+  phone     String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@map("profile")
+}
+
+model Quizz {
+  id          String     @id @default(cuid())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  title       String?
+  description String?
+  expirationLink String?
+  userId     String
+  questions   Question[]
+  candidate    CandidateQuizz[]
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("quizz")
+}
+
+model Question {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  time      Int
+  quizzId    String
+  content   String
+  answers   Answer[]
+  quiz      Quizz    @relation(fields: [quizzId], references: [id], onDelete: Cascade)
+  
+  @@index([quizzId])
+  @@map("question")
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  questionId String
+  content    String
+  correct    Boolean  @default(false)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  
+  @@index([questionId])
+  @@map("answer")
+}
+
+model CandidateQuizz {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  candidateId String
+  quizzId     String
+  score      Int?
+  status    String
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  quiz       Quizz     @relation(fields: [quizzId], references: [id], onDelete: Cascade)
+  videos     Video[]
+  
+  @@index([candidateId])
+  @@index([quizzId])
+  @@map("candidate_quizz")
+}
+
+model Candidate {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email    String
+  firstName String
+  lastName String
+  phone    String
+  quizz    CandidateQuizz[]
+  
+  @@map("candidate")
+}
+
+model Video {
+  id       String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  candidateQuizzId String
+  attchment String
+  candidateQuizz   CandidateQuizz @relation(fields: [candidateQuizzId], references: [id], onDelete: Cascade)
+}
+
+model Task {
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title String
+  description String?
+  status String
+  deadline DateTime?
+  userId String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("task")  
+}
+
+model job {
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title String
+  description String?
+  location String
+  contract String
+  salary String
+  experience String
+  keyPoints String
+  languages String
+  startDate DateTime?
+
+  @@map("job")
+}
