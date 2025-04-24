@@ -1,18 +1,16 @@
 import { Button } from "antd";
-import { CircleHelp, Clock, Plus } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
-import { message } from "antd";
 import { useNavigate } from "react-router";
+import { Clock, CircleHelp } from "lucide-react";
 import { useQuizActions } from "../../stores/useQuizz";
 
 export const EvaluationDashboard = () => {
   const navigate = useNavigate();
-  const [messageApi] = message.useMessage();
-  const [createdQuizz, setCreatedQuizz] = useState([]);
+  const [createdQuizz] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
-  const { getCreatedQuizz, setQuizz } = useQuizActions();
+  const { getCreatedQuizz } = useQuizActions();
 
   useEffect(() => {
     if (user.id) {
@@ -23,14 +21,6 @@ export const EvaluationDashboard = () => {
   const fetchQuizz = async () => {
     const response = await getCreatedQuizz(user.id);
     console.log("response", response);
-    if (!response.success) {
-      messageApi.open({
-        type: "error",
-        content: response.message,
-      });
-    } else {
-      setQuizz(response.data);
-    }
     setLoading(false);
   };
 
@@ -49,17 +39,17 @@ export const EvaluationDashboard = () => {
   );
 };
 
-const QuizzMapper = ({ quizzs }) => {
+const QuizzMapper = ({ quizzs }: { quizzs: IQuizz[] }) => {
   return (
     <div className="flex flex-wrap gap-4">
-      {quizzs.map((item) => (
+      {quizzs.map((item: IQuizz) => (
         <QuizzCard key={item.id} quizz={item} />
       ))}
     </div>
   );
 };
 
-const QuizzCard = ({ quizz }) => {
+const QuizzCard = ({ quizz }: { quizz: IQuizz }) => {
   const navigate = useNavigate();
   return (
     <div className="bg-white rounded-lg border border-gray-200 px-6 py-4 gap-3 flex flex-col w-fit">

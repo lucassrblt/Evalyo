@@ -42,7 +42,7 @@ const FormSelection = ({ text }: { text: string }) => {
   );
 };
 
-const PdfSelection = ({ text }) => {
+const PdfSelection = ({ text }: { text: string }) => {
   const { setCreationType } = useQuizActions();
   return (
     <div

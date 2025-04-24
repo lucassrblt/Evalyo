@@ -1,6 +1,4 @@
-import { Sidebar } from "../components/partial/Sidebar";
-
-const MainLayout = ({ children }) => {
+const MainLayout = ({ children }: { children: any }) => {
   return (
     // <div className="flex w-full h-screen items-end">
     //   <Sidebar />

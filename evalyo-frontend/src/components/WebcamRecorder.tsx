@@ -1,74 +1,81 @@
-import React, { useState, useRef } from "react";
-import Webcam from "react-webcam";
-import RecordRTC from "recordrtc";
+// import React, { useState, useRef } from "react";
+// import Webcam from "react-webcam";
+// import RecordRTC, { RecordRTCPromisesHandler } from "recordrtc";
 
-const WebcamRecorder = () => {
-  const webcamRef = useRef(null); // Reference to the webcam component
-  const [recorder, setRecorder] = useState(null);
-  const [isRecording, setIsRecording] = useState(false);
-  const [videoURL, setVideoURL] = useState(null);
+// const WebcamRecorder = () => {
+//   // webcamRef est un objet de référence de type ReactWebcam
+//   const webcamRef = useRef<Webcam>(null);
 
-  // Start recording
-  const startRecording = () => {
-    const stream = webcamRef.current.getScreenshot(); // Capture the video stream
-    const newRecorder = RecordRTC(stream, {
-      type: "video",
-      mimeType: "video/webm",
-      bitsPerSecond: 128000, // Optionally set bitrate
-    });
-    newRecorder.startRecording();
-    setRecorder(newRecorder);
-    setIsRecording(true);
-  };
+//   // Typage du state "recorder" comme une instance de RecordRTCPromisesHandler ou null
+//   const [recorder, setRecorder] = useState<RecordRTCPromisesHandler | null>(
+//     null
+//   );
+//   const [isRecording, setIsRecording] = useState<boolean>(false);
+//   const [videoURL, setVideoURL] = useState<string | null>(null);
 
-  // Stop recording
-  const stopRecording = () => {
-    recorder.stopRecording(() => {
-      const blob = recorder.getBlob();
-      const videoUrl = URL.createObjectURL(blob);
-      setVideoURL(videoUrl); // Set the video URL for playback
-      setIsRecording(false);
-    });
+//   // Démarre l'enregistrement
+//   const startRecording = () => {
+//     if (!webcamRef.current) return;
 
-    console.log("recorder", recorder);
-  };
+//     const stream = webcamRef.current.getScreenshot(); // capture une image, mais pour un enregistrement vidéo, il faut un stream vidéo réel
+//     const newRecorder = RecordRTC(stream, {
+//       type: "video",
+//       mimeType: "video/webm",
+//       bitsPerSecond: 128000, // Optionnellement, définir le débit binaire
+//     });
+//     newRecorder.startRecording();
+//     setRecorder(newRecorder);
+//     setIsRecording(true);
+//   };
 
-  // Download the recorded video
-  const downloadVideo = () => {
-    if (videoURL) {
-      const a = document.createElement("a");
-      a.href = videoURL;
-      a.download = "recorded_video.webm";
-      a.click();
-    }
-  };
+//   // Arrête l'enregistrement
+//   const stopRecording = () => {
+//     if (recorder) {
+//       recorder.stopRecording(() => {
+//         const blob = recorder.getBlob();
+//         const videoUrl = URL.createObjectURL(blob);
+//         setVideoURL(videoUrl); // Définit l'URL de la vidéo pour la lecture
+//         setIsRecording(false);
+//       });
+//     }
+//   };
 
-  return (
-    <div>
-      <Webcam
-        audio={true}
-        ref={webcamRef}
-        screenshotFormat="image/jpeg"
-        videoConstraints={{ facingMode: "user" }}
-        width="100%"
-        videoHeight="auto"
-      />
-      <div>
-        {!isRecording ? (
-          <button onClick={startRecording}>Start Recording</button>
-        ) : (
-          <button onClick={stopRecording}>Stop Recording</button>
-        )}
-      </div>
-      {videoURL && (
-        <div>
-          <h2>Recorded Video</h2>
-          <video src={videoURL} controls width="400" height="300" />
-          <button onClick={downloadVideo}>Download Video</button>
-        </div>
-      )}
-    </div>
-  );
-};
+//   // Télécharge la vidéo enregistrée
+//   const downloadVideo = () => {
+//     if (videoURL) {
+//       const a = document.createElement("a");
+//       a.href = videoURL;
+//       a.download = "recorded_video.webm";
+//       a.click();
+//     }
+//   };
 
-export default WebcamRecorder;
+//   return (
+//     <div>
+//       <Webcam
+//         audio={true}
+//         ref={webcamRef}
+//         screenshotFormat="image/jpeg"
+//         videoConstraints={{ facingMode: "user" }}
+//         width="100%"
+//         videoHeight="auto"
+//       />
+//       <div>
+//         {!isRecording ? (
+//           <button onClick={startRecording}>Start Recording</button>
+//         ) : (
+//           <button onClick={stopRecording}>Stop Recording</button>
+//         )}
+//       </div>
+//       {videoURL && (
+//         <div>
+//           <h2>Recorded Video</h2>
+//           <video src={videoURL} controls width="400" height="300" />
+//           <button onClick={downloadVideo}>Download Video</button>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default WebcamRecorder;

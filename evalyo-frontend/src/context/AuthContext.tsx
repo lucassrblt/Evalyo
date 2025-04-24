@@ -1,17 +1,10 @@
 import { createContext, useState, useContext, useEffect } from "react";
 
-const AuthContext = createContext(null);
+const AuthContext = createContext<IAuthContext | null>(null);
 
 export const AuthProvider = ({ children }: { children: any }) => {
   const [user, setUser] = useState(() => {
-    const savedUser = JSON.stringify({
-      email: "lrimbault92@gmail.com",
-      id: "cm9tw1dhp0000vb26k8ybibw9",
-      createdAt: "2025-04-23T12:06:22.093Z",
-      updatedAt: "2025-04-23T12:07:07.506Z",
-      active: true,
-      token: 0,
-    });
+    const savedUser = localStorage.getItem("user");
     return savedUser ? JSON.parse(savedUser) : null;
   });
   const [token, setToken] = useState(() => localStorage.getItem("token"));
@@ -129,46 +122,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
     }
   };
 
-  const fetchGoogleInfos = async (googleToken: any) => {
-    try {
-      const response = await fetch(
-        "https://www.googleapis.com/oauth2/v3/userinf",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application",
-            Authorization: `Bearer ${googleToken.access_token}`,
-          },
-        }
-      );
-
-      const data = await response.json();
-      if (data.error) {
-        return { status: "error", message: data.error_description };
-      }
-      return data;
-    } catch (error) {
-      return { status: "error", message: error };
-    }
-  };
-
-  const googleLogin = async (googleInfos: any) => {
-    try {
-      const response = await fetch(`/api/users/google-login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: googleInfos.email,
-          googleId: googleInfos.sub,
-        }),
-      });
-    } catch (err) {
-      console.error("Erreur de connexion Google:", err);
-    }
-  };
-
   return (
     <AuthContext.Provider
       value={{
@@ -177,8 +130,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
         login,
         logout,
         register,
-        fetchGoogleInfos,
-        googleLogin,
       }}
     >
       {children}
@@ -186,7 +137,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
   );
 };
 
-// Hook personnalisé pour utiliser le contexte d'authentification
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

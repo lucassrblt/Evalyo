@@ -1,6 +1,6 @@
 import { useLabel } from "../../stores/useButton";
 
-export const MainButton = ({ onClick }) => {
+export const MainButton = ({ onClick }: { onClick: any }) => {
   const label = useLabel();
   return (
     <button

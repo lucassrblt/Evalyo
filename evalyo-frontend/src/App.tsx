@@ -1,6 +1,5 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router";
-import Create from "./pages/Create";
 import Share from "./pages/Share/Share.tsx";
 import "@ant-design/v5-patch-for-react-19";
 import Auth from "./pages/Auth";
@@ -12,11 +11,11 @@ import { AuthProvider } from "./context/AuthContext";
 import NotFound from "./pages/NotFound";
 import MainLayout from "./layout/MainLayout";
 import Todo from "./pages/Todo";
-import Job from "./pages/Job/JOb";
 import ShareLayout from "./layout/ShareLayout.tsx";
 import { CreateEvaluation } from "./pages/Evaluation/CreateEvaluation";
 import EditEvaluation from "./pages/Evaluation/EditEvaluation";
 import { EvaluationDashboard } from "./pages/Evaluation/EvaluationDashboard";
+import Job from "./pages/Job/Job";
 
 function App() {
   return (
@@ -28,7 +27,7 @@ function App() {
             <Route path="/jobs" element={<MainLayout children={<Job />} />} />
 
             <Route element={<AuthGuard />}>
-              <Route path="/create" element={<Create />} />
+              {/* <Route path="/create" element={<Create />} /> */}
               <Route
                 path="/dashboard"
                 element={<MainLayout children={<Dashboard />} />}
@@ -38,10 +37,10 @@ function App() {
                 element={<MainLayout children={<Todo />} />}
               />
 
-              <Route
+              {/* <Route
                 path="/inbox"
                 element={<MainLayout children={<Create />} />}
-              />
+              /> */}
             </Route>
             <Route
               path="/evaluation/dashboard"

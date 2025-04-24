@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router";
-import { Quizz } from "../types/quizz";
+import { useNavigate } from "react-router";
 
 const useQuizz = () => {
-  const [quizz, setQuizz] = useState<Quizz | null>(null);
-  const [createdQuizz, setCreatedQuizz] = useState<Quizz | null>(null);
+  const [quizz, setQuizz] = useState<IQuizz | null>(null);
+  const [createdQuizz, setCreatedQuizz] = useState<IQuizz | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
@@ -22,7 +21,7 @@ const useQuizz = () => {
     }
   };
 
-  const createQuizz = async (quizz: Quizz) => {
+  const createQuizz = async (quizz: IQuizz) => {
     try {
       setLoading(true);
       const response = await fetch("http://localhost:8000/quizz", {

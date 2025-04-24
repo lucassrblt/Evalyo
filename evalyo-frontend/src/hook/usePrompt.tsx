@@ -7,9 +7,9 @@ const usePrompt = () => {
     { id: 3, name: "Product Manager", icon: "🌍" },
     { id: 4, name: "Software ingennier", icon: "🔬" },
   ]);
-  const [questionsNum, setQuestionsNum] = useState(null);
-  const [selectedJob, setSelectedJob] = useState(null);
-  const [input, setInput] = useState("");
+  const [questionsNum, setQuestionsNum] = useState<number | null>(null);
+  const [selectedJob, setSelectedJob] = useState<number | null>(null);
+  const [input, setInput] = useState<string>("");
   const [themes, setThemes] = useState([]);
   const initalThemes = [
     { id: 1, name: "Developpement", icon: "🧮" },
@@ -24,14 +24,16 @@ const usePrompt = () => {
     { id: 4, name: "Hard" },
     { id: 5, name: "Very hard" },
   ]);
-  const [selectedDifficulty, setSelectedDifficulty] = useState(null);
+  const [selectedDifficulty, setSelectedDifficulty] = useState<number | null>(
+    null
+  );
   const [langs, setLangs] = useState([
     { id: 1, name: "English", icon: "🇬🇧" },
     { id: 2, name: "French", icon: "🇫🇷" },
     { id: 3, name: "Spanish", icon: "🇪🇸" },
     { id: 4, name: "Japanese", icon: "🇯🇵" },
   ]);
-  const [selectedLang, setSelectedLang] = useState(null);
+  const [selectedLang, setSelectedLang] = useState<number | null>(null);
 
   const [response, setResponse] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -83,7 +85,6 @@ const usePrompt = () => {
   };
 
   const preparePrompt = () => {
-    console.log("selectedLang", selectedLang);
     const language = langs.find((lang) => lang.id === selectedLang);
     const difficulty = difficulties.find(
       (diff) => diff.id === selectedDifficulty

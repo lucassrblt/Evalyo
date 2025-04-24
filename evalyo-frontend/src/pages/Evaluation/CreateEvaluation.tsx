@@ -159,37 +159,37 @@ const JobChoice = () => {
   );
 };
 
-const ThemeChoice = () => {
-  const [themes, setThemes] = useState([]);
-  const initalThemes = [
-    { id: 1, name: "Developpement", icon: "🧮" },
-    { id: 2, name: "Ressource humaine", icon: "📜" },
-    { id: 3, name: "Product Manager", icon: "🌍" },
-    { id: 4, name: "Science", icon: "🔬" },
-  ];
-  return (
-    <div className="flex flex-col bg-white border border-gray-200 rounded-xl w-full h-fit py-6 px-10 gap-4">
-      <div className="flex flex-col gap-2">
-        <p className="font-poppins font-semibold text-xl text-slate-950">
-          Number of questions
-        </p>
-        <p className="font-poppins font-regular text-md text-gray-700">
-          Choose your number of questions in your test
-        </p>
-      </div>
+// const ThemeChoice = () => {
+//   const [themes, setThemes] = useState([]);
+//   const initalThemes = [
+//     { id: 1, name: "Developpement", icon: "🧮" },
+//     { id: 2, name: "Ressource humaine", icon: "📜" },
+//     { id: 3, name: "Product Manager", icon: "🌍" },
+//     { id: 4, name: "Science", icon: "🔬" },
+//   ];
+//   return (
+//     <div className="flex flex-col bg-white border border-gray-200 rounded-xl w-full h-fit py-6 px-10 gap-4">
+//       <div className="flex flex-col gap-2">
+//         <p className="font-poppins font-semibold text-xl text-slate-950">
+//           Number of questions
+//         </p>
+//         <p className="font-poppins font-regular text-md text-gray-700">
+//           Choose your number of questions in your test
+//         </p>
+//       </div>
 
-      <div></div>
+//       <div></div>
 
-      <div></div>
-    </div>
-  );
-};
+//       <div></div>
+//     </div>
+//   );
+// };
 
 const DifficultyChoice = () => {
   const { difficulties, selectedDifficulty, setSelectedDifficulty } =
     usePrompt();
 
-  const handleClick = (id) => {
+  const handleClick = (id: number) => {
     setSelectedDifficulty(id);
   };
   return (
@@ -227,7 +227,7 @@ const DifficultyChoice = () => {
 const LangChoice = () => {
   const { langs, selectedLang, setSelectedLang } = usePrompt();
 
-  const handleClick = (id) => {
+  const handleClick = (id: number) => {
     setSelectedLang(id);
   };
 
@@ -255,7 +255,15 @@ const LangChoice = () => {
   );
 };
 
-const Lang = ({ lang, handleClick, selectedLang }) => {
+const Lang = ({
+  lang,
+  handleClick,
+  selectedLang,
+}: {
+  lang: any;
+  handleClick: any;
+  selectedLang: number | null;
+}) => {
   return (
     <div
       className={clsx(

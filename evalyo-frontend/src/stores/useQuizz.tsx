@@ -3,21 +3,16 @@ import { create } from "zustand";
 interface QuizState {
   // State properties
   creationType: string;
-  quizzForm: {
-    title: string;
-    description: string;
-    expiration: string;
-    questions: [];
-  };
+  quizzForm: IQuizzForm;
   quizz: any;
 
   // Actions (methods that modify state)
   actions: {
     setQuizz: (tests: any) => void;
-    getCreatedQuizz: (userId: string) => Promise<void>;
+    getCreatedQuizz: (userId: string) => Promise<IQuizz>;
     setCreationType: (creationType: string) => void;
-    setQuizzForm: (quizzForm: {}) => void;
-    transformJsonToQuizzForm: (json: any) => Promise<void>;
+    setQuizzForm: (quizzForm: IQuizzForm) => void;
+    transformJsonToQuizzForm: (json: any) => void;
   };
 }
 
@@ -32,30 +27,28 @@ const useQuizz = create<QuizState>((set) => ({
   quizz: {},
 
   actions: {
-    setQuizz: (quizz: {}) =>
-      set((state) => ({ quizz }), false, "quiz/setQuizz"),
+    setQuizz: (quizz: {}) => set(() => ({ quizz }), false),
 
     getCreatedQuizz: async (userId: string) => {
       try {
         const response = await fetch(`api/users/${userId}/quizz`);
 
         const data = await response.json();
-        console.log("data", data);
         if (data.success) {
-          set((state) => ({ quizz: data.data }), false, "quiz/fetchQuizz");
+          set(() => ({ quizz: data.data }), false);
         } else {
           console.error("Failed to fetch tests:", data.message);
         }
+        return data;
       } catch (err) {
         console.log(err);
       }
     },
 
     setCreationType: (creationType: string) =>
-      set((state) => ({ creationType }), false, "quiz/setCreationType"),
+      set(() => ({ creationType }), false),
 
-    setQuizzForm: (quizzForm: {}) =>
-      set((state) => ({ quizzForm }), false, "quiz/setQuizzForm"),
+    setQuizzForm: (quizzForm: IQuizzForm) => set(() => ({ quizzForm }), false),
 
     transformJsonToQuizzForm: async (json: any) => {
       const extractJsonRegex = /```json\n([\s\S]*?)\n```/;
@@ -74,7 +67,7 @@ const useQuizz = create<QuizState>((set) => ({
         questions: data.questions,
       };
 
-      set((state) => ({ quizzForm }), false, "quiz/transformJsonToQuizzForm");
+      set(() => ({ quizzForm }), false);
     },
   },
 }));

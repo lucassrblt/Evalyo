@@ -14,8 +14,7 @@ const useQuizz = create<ButtonState>((set) => ({
   label: "Continue",
 
   actions: {
-    setLabel: (label: string) =>
-      set(() => ({ label }), false, "button/setLabel"),
+    setLabel: (label: string) => set(() => ({ label }), false),
   },
 }));
 

@@ -54,14 +54,14 @@ export default function TestFromPdf() {
   };
   return (
     <section className="flex flex-col relative items-center">
-      {step === 0 && <UploadTest file={file} setFile={handleFile} />}
+      {step === 0 && <UploadTest setFile={handleFile} />}
       {step === 1 && <QuestionReview />}
       <MainButton onClick={handleClick} />
     </section>
   );
 }
 
-const UploadTest = ({ file, setFile }) => {
+const UploadTest = ({ setFile }: { setFile: (file: any) => void }) => {
   const props: UploadProps = {
     name: "file",
     multiple: false,

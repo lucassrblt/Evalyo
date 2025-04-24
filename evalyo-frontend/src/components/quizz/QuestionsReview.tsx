@@ -1,4 +1,4 @@
-import { useQuizActions, useQuizzForm } from "../../stores/useQuizz";
+import { useQuizzForm } from "../../stores/useQuizz";
 import clsx from "clsx";
 import { Input } from "antd";
 import { useState } from "react";
@@ -14,7 +14,7 @@ export default function QuestionReview() {
         </h1>
 
         <div className="flex flex-col gap-4">
-          {quizzForm.questions.map((question, index) => (
+          {quizzForm.questions.map((question: IQuestion, index) => (
             <SingleQuestionReview key={index} question={question} />
           ))}
         </div>
@@ -23,27 +23,27 @@ export default function QuestionReview() {
   );
 }
 
-const SingleQuestionReview = ({ question }) => {
+const SingleQuestionReview = ({ question }: { question: IQuestion }) => {
   const [responseToEdit, setResponseToEdit] = useState("");
 
-  const { setQuizzForm } = useQuizActions();
+  // const { setQuizzForm } = useQuizActions();
 
-  const handleResponseToEdit = (value) => {
-    setResponseToEdit(value);
-    setQuizzForm((prev) => ({
-      ...prev,
-      questions: prev.questions.map((q) =>
-        q.id === question.id
-          ? {
-              ...q,
-              reponses: q.reponses.map((r, index) =>
-                index === question.answer ? value : r
-              ),
-            }
-          : q
-      ),
-    }));
-  };
+  // const handleResponseToEdit = (value: any) => {
+  //   setResponseToEdit(value);
+  //   setQuizzForm((prev: IQuizzForm) => ({
+  //     ...prev,
+  //     questions: prev.questions.map((q: IQuestion) =>
+  //       q.id === question.id
+  //         ? {
+  //             ...q,
+  //             reponses: q.responses.map((r: string, index) =>
+  //               index === question.answer ? value : r
+  //             ),
+  //           }
+  //         : q
+  //     ),
+  //   }));
+  // };
 
   return (
     <div className="flex flex-col bg-white border border-gray-200 rounded-xl w-full h-fit py-6 px-10 gap-4">
@@ -53,14 +53,14 @@ const SingleQuestionReview = ({ question }) => {
         </p>
         <Input
           placeholder="Enter your job if not present on the list below"
-          onChange={(e) =>
-            setQuizzForm((prev) => ({
-              ...prev,
-              questions: prev.questions.map((q) =>
-                q.id === question.id ? { ...q, question: e.target.value } : q
-              ),
-            }))
-          }
+          // onChange={(e) =>
+          //   setQuizzForm((prev: IQuizzForm) => ({
+          //     ...prev,
+          //     questions: prev.questions.map((q: IQuestion) =>
+          //       q.id === question.id ? { ...q, question: e.target.value } : q
+          //     ),
+          //   }))
+          // }
           value={question.question}
         />
       </div>
@@ -69,9 +69,9 @@ const SingleQuestionReview = ({ question }) => {
           Réponses :
         </p>
         <div className="flex gap-4 flex-wrap">
-          {question.reponses.map((item, index) => (
+          {question.responses.map((item, index) => (
             <div
-              key={item.id}
+              key={index}
               className={clsx(
                 "flex gap-2 items-center py-2 px-4 transition-all rounded-lg hover:bg-purple-100 hover:scale-105 bg-[#FAFAFA] cursor-pointer",
                 {
@@ -93,9 +93,8 @@ const SingleQuestionReview = ({ question }) => {
           <Input
             placeholder="Choose a response to edit"
             value={responseToEdit}
-            onChange={(e) => handleResponseToEdit(e.target.value)}
+            // onChange={(e) => handleResponseToEdit(e.target.value)}
           />
-          {question.responses === question.answer}
           <button className="flex rounded-md bg-green-400 py-2 px-2">
             Good Answer
           </button>

@@ -1,6 +1,5 @@
-import { Navigate, useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { message } from "antd";
-import { useGoogleLogin } from "@react-oauth/google";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 
@@ -10,25 +9,8 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const location = useLocation();
-  const { login, register, fetchGoogleInfos, googleLogin } = useAuth();
+  const { login, register } = useAuth();
   const navigate = useNavigate();
-
-  const GoogleLogin = useGoogleLogin({
-    onSuccess: (codeResponse) => handleGoogleLogin(codeResponse),
-    onError: (error) => console.log("Login Failed:", error),
-  });
-
-  const handleGoogleLogin = async (codeResponse) => {
-    const infos = await fetchGoogleInfos(codeResponse);
-    if (!infos.success) {
-      messageApi.open({
-        type: "error",
-        content: infos.message,
-      });
-    }
-
-    const response = await googleLogin(infos);
-  };
 
   const handleLogin = async () => {
     const response = await login(email, password);
@@ -94,13 +76,6 @@ export default function Auth() {
             handleConnect={handleLogin}
           />
         )}
-        <p>or</p>
-        <button
-          onClick={() => GoogleLogin()}
-          className="bg-[#FFE55D] text-black py-2.5 flex items-center justify-center rounded-lg font-poppins font-semibold text-xl w-full button-shadow"
-        >
-          Continue with Google
-        </button>
       </div>
     </section>
   );
